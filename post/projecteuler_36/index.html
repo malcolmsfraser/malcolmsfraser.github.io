@@ -6,7 +6,7 @@
 
     
     
-    <title>Project Euler: Problem 9 · Malcolm Smith Fraser</title>
+    <title>Project Euler: Problem 36 · Malcolm Smith Fraser</title>
 
     <meta name="HandheldFriendly" content="True" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -55,7 +55,7 @@
 
                 
 
-                <h1 class="post-full-title">Project Euler: Problem 9</h1>
+                <h1 class="post-full-title">Project Euler: Problem 36</h1>
 
                 
 
@@ -96,49 +96,49 @@
 
             <section class="post-full-content">
                 <div class="post-content">
-                    <p><strong>Special Pythagorean triplet</strong> (solved by 360,641 as of 8/25/2021)</p>
-<p>A Pythagorean triplet is a set of three natural numbers, a &lt; b &lt; c, for which,</p>
-<p>$a^2 + b^2 = c^2$
-For example, $3^2 + 4^2 = 9 + 16 = 25 = 5^2$.</p>
-<p>There exists exactly one Pythagorean triplet for which a + b + c = 1000.
-Find the product abc.</p>
+                    <p><strong>Double-base palindromes</strong> (solved by 89539 as of 8/25/25)</p>
+<p>The decimal number, 585 = 10010010012 (binary), is palindromic in both bases.</p>
+<p>Find the sum of all numbers, less than one million, which are palindromic in base 10 and base 2.</p>
+<p>(Please note that the palindromic number, in either base, may not include leading zeros.)</p>
 <blockquote>
+<p>Helper functions:</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_binary</span>(x):
+    <span style="color:#e6db74">&#34;&#34;&#34;Returns the binary form of the base 10 number without leading zeroes&#34;&#34;&#34;</span>
+
+    b <span style="color:#f92672">=</span> bin(x)<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#34;b&#34;</span>)[<span style="color:#ae81ff">1</span>]
+    <span style="color:#66d9ef">return</span> b
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">check_palindrome</span>(num):
+    <span style="color:#e6db74">&#34;&#34;&#34;Checks if the base 10 and its binary are both palindromes&#34;&#34;&#34;</span>
+
+    string <span style="color:#f92672">=</span> str(num)
+    bstring <span style="color:#f92672">=</span> get_binary(num)
+    <span style="color:#66d9ef">if</span> string <span style="color:#f92672">==</span> string[::<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>] <span style="color:#f92672">and</span> bstring <span style="color:#f92672">==</span> bstring[::<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]:
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">True</span>
+    <span style="color:#66d9ef">else</span>:
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">False</span>
+</code></pre></div><blockquote>
 <p>My solution:</p>
 </blockquote>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> math
-
-<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">find_special</span>(value<span style="color:#f92672">=</span><span style="color:#ae81ff">1000</span>):
-    <span style="color:#e6db74">&#34;&#34;&#34;
-</span><span style="color:#e6db74">    Finds the first pythagorean triplet who&#39;s sums add to the input value. Default value is 1000 for special triplet
-</span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">sum_palindromes</span>(limit<span style="color:#f92672">=</span><span style="color:#ae81ff">1000000</span>):
+    <span style="color:#e6db74">&#34;&#34;&#34;Sums all base2/binary palidromes less than the limit value&#34;&#34;&#34;</span>
     ss <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
-    found <span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span>
-
-    <span style="color:#66d9ef">for</span> a <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">1</span>, value): <span style="color:#75715e"># a can never be as large as &#34;value&#34; so this is where I cap the loop for convinience</span>
-        <span style="color:#66d9ef">if</span> found <span style="color:#f92672">==</span> <span style="color:#66d9ef">True</span>:
-            <span style="color:#66d9ef">break</span>
-
-        <span style="color:#66d9ef">for</span> b <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">1</span>, value): <span style="color:#75715e"># b can never be as large as &#34;value&#34; so this is where I cap the loop for convinience</span>
-
-            c <span style="color:#f92672">=</span> math<span style="color:#f92672">.</span>sqrt(a <span style="color:#f92672">*</span> a <span style="color:#f92672">+</span> b <span style="color:#f92672">*</span> b)
-
-            <span style="color:#66d9ef">if</span> c <span style="color:#f92672">%</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>: <span style="color:#75715e"># check if c is an integer.. ie, is this a pythagorean triplet</span>
-                <span style="color:#66d9ef">if</span> int(a<span style="color:#f92672">+</span>b<span style="color:#f92672">+</span>c) <span style="color:#f92672">==</span> value: <span style="color:#75715e"># check if special triplet</span>
-                    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Special Triplet found! </span><span style="color:#e6db74">{</span>(a,b,int(c))<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
-                    found <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>
-                    <span style="color:#66d9ef">break</span>
-    <span style="color:#66d9ef">else</span>:
-        print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;There is no pythagorean triplet that sums to </span><span style="color:#e6db74">{</span>value<span style="color:#e6db74">}</span><span style="color:#e6db74">.&#34;</span>)
-</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">find_special()
-<span style="color:#f92672">&gt;&gt;&gt;</span>Special Triplet found<span style="color:#960050;background-color:#1e0010">!</span> (<span style="color:#ae81ff">200</span>, <span style="color:#ae81ff">375</span>, <span style="color:#ae81ff">425</span>)
+    <span style="color:#66d9ef">for</span> x <span style="color:#f92672">in</span> range(limit):
+        <span style="color:#66d9ef">if</span> check_palindrome(x):
+            ss <span style="color:#f92672">+=</span> x
+    <span style="color:#66d9ef">return</span> ss
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sum_palindromes()
+<span style="color:#f92672">&gt;&gt;&gt;</span><span style="color:#ae81ff">872187</span>
 </code></pre></div><blockquote>
 <p>My approach:</p>
 </blockquote>
-<p>The first part of this question is to come up with a way to generate pythagorean triplets.
-I accomplished this my looping through all integers between 0 and 1000 for both <code>a</code> and <code>b</code>.
-<code>c</code> was then calculated following the given formula. To ensure a pythagorean triplet, for which all values are integers,
-I check to to make sure <code>c</code> is evenly divisible by 1.</p>
-<p>I then used this method for continuously generate new pythagorean triplets until the one that sums to the given value (in this case 1000) is found.</p>
+<p>There are three parts to this question.</p>
+<p>The first is generating the binary value of the given base10 number without any leading zeros.
+This is accomplished in the get_binary function that uses python&rsquo;s built in <code>bin</code> operator.</p>
+<p>The second involves checking if the both the base10 number and its binary are both palindromes.
+This is rather trivial using basic string manipulations.</p>
+<p>Lastly, to reach the final answer we need to sum all the palindromes that exist for numbers less than 1 million.
+This can be accomplished with a loop through all such values.</p>
 
                 </div>
             </section>
@@ -149,9 +149,7 @@ I check to to make sure <code>c</code> is evenly divisible by 1.</p>
 </main>
 <aside class="read-next outer">
     <div class="inner">
-        <div class="read-next-feed">
-
-            <article class="post-card post
+        <div class="read-next-feed"><article class="post-card post
  no-image
  ">
 
@@ -159,21 +157,21 @@ I check to to make sure <code>c</code> is evenly divisible by 1.</p>
     
         <div class="post-card-content">
     
-            <a class="post-card-content-link" href="https://malcolmsfraser.github.io/post/projecteuler_36/">
+            <a class="post-card-content-link" href="https://malcolmsfraser.github.io/post/projecteuler_9/">
     
                 <header class="post-card-header">
                     
 
-                    <h2 class="post-card-title">Project Euler: Problem 36</h2>
+                    <h2 class="post-card-title">Project Euler: Problem 9</h2>
                 </header>
     
                 <section class="post-card-excerpt">
-                    <p>Double-base palindromes (solved by 89539 as of 8/25/25)
-The decimal number, 585 = 10010010012 (binary), is palindromic in both bases.
-Find the sum of all numbers, less than one million, which are palindromic in base 10 and base 2.
-(Please note that the palindromic number, in either base, may not include leading zeros.)
- Helper functions:
- def get_binary(x): &#34;&#34;&#34;Returns the binary form of the base 10 number without leading zeroes&#34;&#34;&#34; b = bin(x).</p>
+                    <p>Special Pythagorean triplet (solved by 360,641 as of 8/25/2021)
+A Pythagorean triplet is a set of three natural numbers, a &lt; b &lt; c, for which,
+$a^2 + b^2 = c^2$ For example, $3^2 + 4^2 = 9 + 16 = 25 = 5^2$.
+There exists exactly one Pythagorean triplet for which a + b + c = 1000. Find the product abc.
+ My solution:
+ import math def find_special(value=1000): &#34;&#34;&#34; Finds the first pythagorean triplet who&#39;s sums add to the input value.</p>
                 </section>
     
             </a>
@@ -196,6 +194,8 @@ Find the sum of all numbers, less than one million, which are palindromic in bas
 
 </article>
     
+
+            
         </div>
     </div>
 </aside>
