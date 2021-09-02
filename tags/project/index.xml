@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>project on Malcolm Smith Fraser</title>
+    <link>https://malcolmsfraser.github.io/tags/project/</link>
+    <description>Recent content in project on Malcolm Smith Fraser</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 02 Sep 2021 06:12:47 +0000</lastBuildDate><atom:link href="https://malcolmsfraser.github.io/tags/project/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Projecteuler_119</title>
+      <link>https://malcolmsfraser.github.io/post/projecteuler_119/</link>
+      <pubDate>Thu, 02 Sep 2021 06:12:47 +0000</pubDate>
+      
+      <guid>https://malcolmsfraser.github.io/post/projecteuler_119/</guid>
+      <description>Digit power sum (solved by 12212 as of 9/1/2021)
+The number 512 is interesting because it is equal to the sum of its digits raised to some power: 5 + 1 + 2 = 8, and 83 = 512. Another example of a number with this property is 614656 = 284.
+We shall define an to be the nth term of this sequence and insist that a number must contain at least two digits to have a sum.</description>
+    </item>
+    
+    <item>
+      <title>Project Euler: Problem 36</title>
+      <link>https://malcolmsfraser.github.io/post/projecteuler_36/</link>
+      <pubDate>Thu, 02 Sep 2021 05:38:26 +0000</pubDate>
+      
+      <guid>https://malcolmsfraser.github.io/post/projecteuler_36/</guid>
+      <description>Double-base palindromes (solved by 89539 as of 8/25/25)
+The decimal number, 585 = 10010010012 (binary), is palindromic in both bases.
+Find the sum of all numbers, less than one million, which are palindromic in base 10 and base 2.
+(Please note that the palindromic number, in either base, may not include leading zeros.)
+ Helper functions:
+ def get_binary(x): &amp;#34;&amp;#34;&amp;#34;Returns the binary form of the base 10 number without leading zeroes&amp;#34;&amp;#34;&amp;#34; b = bin(x).</description>
+    </item>
+    
+    <item>
+      <title>Project Euler: Problem 9</title>
+      <link>https://malcolmsfraser.github.io/post/projecteuler_9/</link>
+      <pubDate>Thu, 02 Sep 2021 05:09:31 +0000</pubDate>
+      
+      <guid>https://malcolmsfraser.github.io/post/projecteuler_9/</guid>
+      <description>Special Pythagorean triplet (solved by 360,641 as of 8/25/2021)
+A Pythagorean triplet is a set of three natural numbers, a &amp;lt; b &amp;lt; c, for which,
+$a^2 + b^2 = c^2$ For example, $3^2 + 4^2 = 9 + 16 = 25 = 5^2$.
+There exists exactly one Pythagorean triplet for which a + b + c = 1000. Find the product abc.
+ My solution:
+ import math def find_special(value=1000): &amp;#34;&amp;#34;&amp;#34; Finds the first pythagorean triplet who&amp;#39;s sums add to the input value.</description>
+    </item>
+    
+  </channel>
+</rss>
