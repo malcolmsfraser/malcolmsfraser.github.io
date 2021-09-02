@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    
+    
+    <title>Projecteuler_119 · Malcolm Smith Fraser</title>
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    
+    <link rel="stylesheet" href="https://malcolmsfraser.github.io/style.main.min.5ea2f07be7e07e221a7112a3095b89d049b96c48b831f16f1015bf2d95d914e5.css" />
+
+</head>
+<body class=" post-template ">
+
+    <div class="site-wrapper">
+
+<header class="site-header"><div class="outer site-nav-main">
+    <div class="inner"><nav class="site-nav">
+    <div class="site-nav-left">
+        
+            <a class="site-nav-logo" href="https://malcolmsfraser.github.io">Malcolm Smith Fraser</a>
+        
+        
+        <div class="site-nav-content">
+            <ul class="nav" role="menu">
+                
+                <li class="nav-home" role="menuitem"><a href="/about/">About</a></li>
+                
+                <li class="nav-home" role="menuitem"><a href="/image-credit/">Image Credit</a></li>
+                
+                <li class="nav-home" role="menuitem"><a href="https://github.com/malcolmsfraser">My Github</a></li>
+                
+                <li class="nav-home" role="menuitem"><a href="https://malcolmsfraser.github.io">Author Homepage</a></li>
+                
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+</div>
+</div></header>
+
+<main id="site-main" class="site-main outer">
+    <div class="inner">
+
+        <article class="post-full post  no-image ">
+
+            <header class="post-full-header">
+
+                
+
+                <h1 class="post-full-title">Projecteuler_119</h1>
+
+                
+
+                <div class="post-full-byline">
+                    <section class="post-full-byline-content">
+
+                        <ul class="author-list">
+    <li class="author-list-item">
+        <div class="author-card">
+            <div class="author-profile-image"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="M3.513 18.998C4.749 15.504 8.082 13 12 13s7.251 2.504 8.487 5.998C18.47 21.442 15.417 23 12 23s-6.47-1.558-8.487-4.002zM12 12c2.21 0 4-2.79 4-5s-1.79-4-4-4-4 1.79-4 4 1.79 5 4 5z" fill="#FFF"/></g></svg></div>
+            <div class="author-info">
+                <div class="author-info">
+                    <h2>Malcolm Smith Fraser</h2>
+                </div>
+            </div>
+        </div>
+        <a href="#" class="author-avatar author-profile-image"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="M3.513 18.998C4.749 15.504 8.082 13 12 13s7.251 2.504 8.487 5.998C18.47 21.442 15.417 23 12 23s-6.47-1.558-8.487-4.002zM12 12c2.21 0 4-2.79 4-5s-1.79-4-4-4-4 1.79-4 4 1.79 5 4 5z" fill="#FFF"/></g></svg></a>
+    </li>
+</ul>
+
+                        <section class="post-full-byline-meta">
+                            
+                                <h4 class="author-name">Malcolm Smith Fraser</h4>
+                            
+                            <div class="byline-meta-content">
+                                <time class="byline-meta-date" datetime="2021-69-09">2 September 2021</time>
+                                <span class="byline-reading-time"><span class="bull">&bull;</span> 2 min read</span>
+                            </div>
+                        </section>
+
+                    </section>
+
+
+                </div>
+            </header>
+
+            
+
+            <section class="post-full-content">
+                <div class="post-content">
+                    <p><strong>Digit power sum</strong> (solved by 12212 as of 9/1/2021)</p>
+<p>The number 512 is interesting because it is equal to the sum of its digits raised to some power: 5 + 1 + 2 = 8, and 83 = 512. Another example of a number with this property is 614656 = 284.</p>
+<p>We shall define an to be the nth term of this sequence and insist that a number must contain at least two digits to have a sum.</p>
+<p>You are given that a2 = 512 and a10 = 614656.</p>
+<p>Find a30</p>
+<blockquote>
+<p>My solution:</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">nth_digit_power_sum</span>(n):
+    <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">    For x in (0,100) this function searches x^0 to x^20 for cases where x^n equals the sum of the digits in x.
+</span><span style="color:#e6db74">    Returns the (input) nth term in the sequence of these such values when sorted in ascending order.
+</span><span style="color:#e6db74">    
+</span><span style="color:#e6db74">    **Note the loop as written only returns the first 47 such values but this can be extended as needed.
+</span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+    power_sums <span style="color:#f92672">=</span> set()
+    <span style="color:#66d9ef">for</span> a <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">100</span>):
+        x <span style="color:#f92672">=</span> a
+        <span style="color:#66d9ef">for</span> b <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">20</span>): 
+            x <span style="color:#f92672">*=</span> a 
+            <span style="color:#66d9ef">if</span> x <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">10</span>: 
+                <span style="color:#66d9ef">continue</span> 
+            <span style="color:#66d9ef">if</span> sum(map(int, str(x))) <span style="color:#f92672">==</span> a: 
+                power_sums<span style="color:#f92672">.</span>add(x) 
+
+    <span style="color:#66d9ef">return</span> sorted(power_sums)[n<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">nth_digit_power_sum(<span style="color:#ae81ff">30</span>)
+<span style="color:#f92672">&gt;&gt;&gt;</span><span style="color:#ae81ff">248155780267521</span>
+</code></pre></div><blockquote>
+<p>My approach:</p>
+</blockquote>
+<p>This one was pretty tricky to think through, buit the solution I came up with was fairly simple.</p>
+<p>On one side we have digits we need to sum, and on the other hand we have powers to calculate.
+The most straightforward approach is to calculate the all (0-20 in this case) the powers for a given range of numbers (0-100).
+As we calculate these powers, if its determined that sum the of the digits of one of these powers equals the base of that power,
+we append it to a set - which avoids any duplicates.
+Once we&rsquo;ve finished iterating through our sample space we can sort and index for the desired value.</p>
+
+                </div>
+            </section>
+
+        </article>
+
+    </div>
+</main>
+<aside class="read-next outer">
+    <div class="inner">
+        <div class="read-next-feed"><article class="post-card post
+ no-image
+ ">
+
+        
+    
+        <div class="post-card-content">
+    
+            <a class="post-card-content-link" href="https://malcolmsfraser.github.io/post/projecteuler_36/">
+    
+                <header class="post-card-header">
+                    
+
+                    <h2 class="post-card-title">Project Euler: Problem 36</h2>
+                </header>
+    
+                <section class="post-card-excerpt">
+                    <p>Double-base palindromes (solved by 89539 as of 8/25/25)
+The decimal number, 585 = 10010010012 (binary), is palindromic in both bases.
+Find the sum of all numbers, less than one million, which are palindromic in base 10 and base 2.
+(Please note that the palindromic number, in either base, may not include leading zeros.)
+ Helper functions:
+ def get_binary(x): &#34;&#34;&#34;Returns the binary form of the base 10 number without leading zeroes&#34;&#34;&#34; b = bin(x).</p>
+                </section>
+    
+            </a>
+
+            <footer class="post-card-meta">
+                    <ul class="author-list">
+                        <li class="author-list-item">
+                            <div class="author-name-tooltip">Malcolm Smith Fraser</div>
+                            <a href="#" class="static-avatar author-profile-image"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="M3.513 18.998C4.749 15.504 8.082 13 12 13s7.251 2.504 8.487 5.998C18.47 21.442 15.417 23 12 23s-6.47-1.558-8.487-4.002zM12 12c2.21 0 4-2.79 4-5s-1.79-4-4-4-4 1.79-4 4 1.79 5 4 5z" fill="#FFF"/></g></svg></a>
+                        </li>
+                    </ul>
+                    <div class="post-card-byline-content">
+                        <span>Malcolm Smith Fraser</span>
+                        <span class="post-card-byline-date"><time datetime="2021-59-09">2 September 2021</time>
+                            <span class="bull">&bull;</span> 2 min read</span>
+                    </div>
+                </footer>
+    
+        </div>
+
+</article>
+    
+
+            
+        </div>
+    </div>
+</aside>
+
+
+        <footer class="site-footer outer">
+            <div class="site-footer-content inner">
+                <section class="copyright"><a href="https://malcolmsfraser.github.io">Malcolm Smith Fraser</a> &copy; 2021</section>
+                <nav class="site-footer-nav">
+                    <a href="https://malcolmsfraser.github.io">Latest Posts</a>
+                    <a href="https://facebook.com" target="_blank" rel="noopener">Facebook</a>
+                    
+                    <a href="https://github.com/malcolmsfraser" target="_blank" rel="noopener">Github</a>
+                    <a href="https://jonathanjanssens.com" target="_blank" rel="noopener" style="opacity: 0.5;">Hugo Casper3 by Jonathan Janssens</a>
+                </nav>
+            </div>
+        </footer>
+
+    </div>
+
+</body>
+</html>
