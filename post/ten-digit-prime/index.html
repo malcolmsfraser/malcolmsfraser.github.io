@@ -136,7 +136,7 @@
             <span style="color:#66d9ef">break</span>
     <span style="color:#66d9ef">else</span>:
         print(<span style="color:#e6db74">&#34;10 digit prime not found, increase the precision&#34;</span>)
-</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">check_expansion()
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">check_expansion(expansion<span style="color:#f92672">=</span>get_pi, scale<span style="color:#f92672">=</span><span style="color:#ae81ff">17</span>)
 <span style="color:#f92672">&gt;&gt;&gt;</span><span style="color:#ae81ff">8649375157</span> <span style="color:#f92672">is</span> the first <span style="color:#ae81ff">10</span> digit prime <span style="color:#f92672">in</span> the decimal expansion of <span style="color:#ae81ff">17</span><span style="color:#f92672">*</span>pi
 </code></pre></div><blockquote>
 <p>My approach:</p>
@@ -180,7 +180,7 @@ test_check_prime()
 <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_check_expansion</span>():
     e_prime_10 <span style="color:#f92672">=</span> <span style="color:#ae81ff">7427466391</span>
     
-    <span style="color:#66d9ef">assert</span> int(check_expansion(expansion <span style="color:#f92672">=</span> get_e,prec<span style="color:#f92672">=</span><span style="color:#ae81ff">500</span>)) <span style="color:#f92672">==</span> e_prime_10
+    <span style="color:#66d9ef">assert</span> int(check_expansion(expansion<span style="color:#f92672">=</span>get_e, prec<span style="color:#f92672">=</span><span style="color:#ae81ff">500</span>)) <span style="color:#f92672">==</span> e_prime_10
     print(<span style="color:#e6db74">&#34;Test passed!&#34;</span>)
 
 test_check_expansion()
