@@ -124,19 +124,20 @@
 </code></pre></div><blockquote>
 <p>My solution:</p>
 </blockquote>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">check_expansion</span>(prec<span style="color:#f92672">=</span><span style="color:#ae81ff">50</span>):
-    <span style="color:#e6db74">&#34;&#34;&#34;Checks if 10 digit values in the decimal expansion of 17pi are prime&#34;&#34;&#34;</span>
-    seventeen_pi_expansion <span style="color:#f92672">=</span> str(<span style="color:#ae81ff">17</span><span style="color:#f92672">*</span>get_pi(prec))<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#34;.&#34;</span>)[<span style="color:#ae81ff">1</span>]
-    length <span style="color:#f92672">=</span> len(seventeen_pi_expansion)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">check_expansion</span>(expansion, scale<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, prec<span style="color:#f92672">=</span><span style="color:#ae81ff">50</span>):
+    <span style="color:#e6db74">&#34;&#34;&#34;Check if 10 digit values in the decimal expansion of 17pi are prime&#34;&#34;&#34;</span>
+    expan <span style="color:#f92672">=</span> str(scale<span style="color:#f92672">*</span>expansion(prec))<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#34;.&#34;</span>)[<span style="color:#ae81ff">1</span>]
+    length <span style="color:#f92672">=</span> len(expan)
     <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(length<span style="color:#f92672">-</span><span style="color:#ae81ff">10</span>):
-        window <span style="color:#f92672">=</span> seventeen_pi_expansion[i:i<span style="color:#f92672">+</span><span style="color:#ae81ff">10</span>]
+        window <span style="color:#f92672">=</span> expan[i:i<span style="color:#f92672">+</span><span style="color:#ae81ff">10</span>]
         <span style="color:#66d9ef">if</span> check_prime(int(window)):
-            print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>window<span style="color:#e6db74">}</span><span style="color:#e6db74"> is the first 10 digit prime in the decimal expansion of 17pi&#34;</span>)
+            print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>window<span style="color:#e6db74">}</span><span style="color:#e6db74"> is the first 10 digit prime in the decimal expansion of </span><span style="color:#e6db74">{</span>scale<span style="color:#e6db74">}</span><span style="color:#e6db74">*</span><span style="color:#e6db74">{</span>expansion<span style="color:#f92672">.</span>__name__<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#39;_&#39;</span>)[<span style="color:#ae81ff">1</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+            <span style="color:#66d9ef">return</span> window
             <span style="color:#66d9ef">break</span>
     <span style="color:#66d9ef">else</span>:
         print(<span style="color:#e6db74">&#34;10 digit prime not found, increase the precision&#34;</span>)
 </code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">check_expansion()
-<span style="color:#f92672">&gt;&gt;&gt;</span><span style="color:#ae81ff">8649375157</span> <span style="color:#f92672">is</span> the first <span style="color:#ae81ff">10</span> digit prime <span style="color:#f92672">in</span> the decimal expansion of <span style="color:#ae81ff">17</span>pi
+<span style="color:#f92672">&gt;&gt;&gt;</span><span style="color:#ae81ff">8649375157</span> <span style="color:#f92672">is</span> the first <span style="color:#ae81ff">10</span> digit prime <span style="color:#f92672">in</span> the decimal expansion of <span style="color:#ae81ff">17</span><span style="color:#f92672">*</span>pi
 </code></pre></div><blockquote>
 <p>My approach:</p>
 </blockquote>
@@ -152,7 +153,41 @@ What the get_pi function return is an mpmath object which must be converted to a
 If any of these numbers is found to be a factor of n, then n is not prime.</p>
 <p>Creating the sliding window function is rather trivial using slicing since the decimal expansion of 17pi is already in string form.<br>
 The function converts a given 10 digit value to an integer and applies the prime checker.</p>
+<blockquote>
+<p>Unit tests:</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_get_pi</span>():
+    <span style="color:#66d9ef">assert</span> mp<span style="color:#f92672">.</span>pi <span style="color:#f92672">==</span> get_pi(<span style="color:#ae81ff">10</span>)
+    <span style="color:#66d9ef">assert</span> mp<span style="color:#f92672">.</span>pi <span style="color:#f92672">==</span> get_pi(<span style="color:#ae81ff">100</span>)
+    print(<span style="color:#e6db74">&#34;Test passed!&#34;</span>)
 
+test_get_pi()
+<span style="color:#f92672">&gt;&gt;&gt;</span>Test passed<span style="color:#960050;background-color:#1e0010">!</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_check_prime</span>():
+    <span style="color:#66d9ef">assert</span> check_prime(<span style="color:#ae81ff">2</span>) <span style="color:#f92672">==</span> <span style="color:#66d9ef">True</span>
+    <span style="color:#66d9ef">assert</span> check_prime(<span style="color:#ae81ff">7</span>) <span style="color:#f92672">==</span> <span style="color:#66d9ef">True</span>
+    <span style="color:#66d9ef">assert</span> check_prime(<span style="color:#ae81ff">4</span>) <span style="color:#f92672">==</span> <span style="color:#66d9ef">False</span>
+    <span style="color:#66d9ef">assert</span> check_prime(<span style="color:#ae81ff">25</span>) <span style="color:#f92672">==</span> <span style="color:#66d9ef">False</span>
+    print(<span style="color:#e6db74">&#34;Test passed!&#34;</span>)
+
+test_check_prime()
+<span style="color:#f92672">&gt;&gt;&gt;</span>Test passed<span style="color:#960050;background-color:#1e0010">!</span>
+<span style="color:#960050;background-color:#1e0010">```</span>python
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_e</span>(n):
+    <span style="color:#e6db74">&#34;&#34;&#34;Returns returns the first n digits of e&#34;&#34;&#34;</span>
+    mp<span style="color:#f92672">.</span>dps <span style="color:#f92672">=</span> n
+    <span style="color:#66d9ef">return</span> mp<span style="color:#f92672">.</span>e
+    
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_check_expansion</span>():
+    e_prime_10 <span style="color:#f92672">=</span> <span style="color:#ae81ff">7427466391</span>
+    
+    <span style="color:#66d9ef">assert</span> int(check_expansion(expansion <span style="color:#f92672">=</span> get_e,prec<span style="color:#f92672">=</span><span style="color:#ae81ff">500</span>)) <span style="color:#f92672">==</span> e_prime_10
+    print(<span style="color:#e6db74">&#34;Test passed!&#34;</span>)
+
+test_check_expansion()
+<span style="color:#f92672">&gt;&gt;&gt;</span><span style="color:#ae81ff">7427466391</span> <span style="color:#f92672">is</span> the first <span style="color:#ae81ff">10</span> digit prime <span style="color:#f92672">in</span> the decimal expansion of <span style="color:#ae81ff">1</span><span style="color:#f92672">*</span>e
+<span style="color:#f92672">&gt;&gt;&gt;</span>Test passed<span style="color:#960050;background-color:#1e0010">!</span>
+</code></pre></div>
                 </div>
             </section>
 
