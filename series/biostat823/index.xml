@@ -6,7 +6,18 @@
     <description>Recent content in biostat823 on Malcolm Smith Fraser</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 02 Sep 2021 06:12:47 +0000</lastBuildDate><atom:link href="https://malcolmsfraser.github.io/series/biostat823/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 12 Sep 2021 23:40:47 +0000</lastBuildDate><atom:link href="https://malcolmsfraser.github.io/series/biostat823/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Ten Digit Prime</title>
+      <link>https://malcolmsfraser.github.io/post/ten-digit-prime/</link>
+      <pubDate>Sun, 12 Sep 2021 23:40:47 +0000</pubDate>
+      
+      <guid>https://malcolmsfraser.github.io/post/ten-digit-prime/</guid>
+      <description>Finding the first 10 digit prime in the decimal expansion of 17pi
+ Helper functions:
+ from mpmath import mpmath def get_pi(n): &amp;#34;&amp;#34;&amp;#34;Returns the first n digits of pi&amp;#34;&amp;#34;&amp;#34; mp.dps = n return mp.pi def check_prime(n): &amp;#34;&amp;#34;&amp;#34;Checks if n is prime by searching range(2,sqrt(n)) for factors&amp;#34;&amp;#34;&amp;#34; prime_flag = 0 if n &amp;gt; 1: for i in range(2, int(np.sqrt(n)) + 1): if (n % i == 0): prime_flag = 1 break if (prime_flag == 0): return True else: return False else: return False  My solution:</description>
+    </item>
+    
     <item>
       <title>Project Euler: Problem 119</title>
       <link>https://malcolmsfraser.github.io/post/projecteuler_119/</link>

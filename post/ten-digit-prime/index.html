@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    
+    
+    <title>Ten Digit Prime · Malcolm Smith Fraser</title>
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    
+    <link rel="stylesheet" href="https://malcolmsfraser.github.io/style.main.min.5ea2f07be7e07e221a7112a3095b89d049b96c48b831f16f1015bf2d95d914e5.css" />
+
+</head>
+<body class=" post-template ">
+
+    <div class="site-wrapper">
+
+<header class="site-header"><div class="outer site-nav-main">
+    <div class="inner"><nav class="site-nav">
+    <div class="site-nav-left">
+        
+            <a class="site-nav-logo" href="https://malcolmsfraser.github.io">Malcolm Smith Fraser</a>
+        
+        
+        <div class="site-nav-content">
+            <ul class="nav" role="menu">
+                
+                <li class="nav-home" role="menuitem"><a href="/about/">About</a></li>
+                
+                <li class="nav-home" role="menuitem"><a href="/image-credit/">Image Credit</a></li>
+                
+                <li class="nav-home" role="menuitem"><a href="https://github.com/malcolmsfraser">My Github</a></li>
+                
+                <li class="nav-home" role="menuitem"><a href="https://malcolmsfraser.github.io">Author Homepage</a></li>
+                
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+</div>
+</div></header>
+
+<main id="site-main" class="site-main outer">
+    <div class="inner">
+
+        <article class="post-full post  no-image ">
+
+            <header class="post-full-header">
+
+                
+
+                <h1 class="post-full-title">Ten Digit Prime</h1>
+
+                
+
+                <div class="post-full-byline">
+                    <section class="post-full-byline-content">
+
+                        <ul class="author-list">
+    <li class="author-list-item">
+        <div class="author-card">
+            <div class="author-profile-image"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="M3.513 18.998C4.749 15.504 8.082 13 12 13s7.251 2.504 8.487 5.998C18.47 21.442 15.417 23 12 23s-6.47-1.558-8.487-4.002zM12 12c2.21 0 4-2.79 4-5s-1.79-4-4-4-4 1.79-4 4 1.79 5 4 5z" fill="#FFF"/></g></svg></div>
+            <div class="author-info">
+                <div class="author-info">
+                    <h2>Malcolm Smith Fraser</h2>
+                </div>
+            </div>
+        </div>
+        <a href="#" class="author-avatar author-profile-image"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="M3.513 18.998C4.749 15.504 8.082 13 12 13s7.251 2.504 8.487 5.998C18.47 21.442 15.417 23 12 23s-6.47-1.558-8.487-4.002zM12 12c2.21 0 4-2.79 4-5s-1.79-4-4-4-4 1.79-4 4 1.79 5 4 5z" fill="#FFF"/></g></svg></a>
+    </li>
+</ul>
+
+                        <section class="post-full-byline-meta">
+                            
+                                <h4 class="author-name">Malcolm Smith Fraser</h4>
+                            
+                            <div class="byline-meta-content">
+                                <time class="byline-meta-date" datetime="2021-119-09">12 September 2021</time>
+                                <span class="byline-reading-time"><span class="bull">&bull;</span> 2 min read</span>
+                            </div>
+                        </section>
+
+                    </section>
+
+
+                </div>
+            </header>
+
+            
+
+            <section class="post-full-content">
+                <div class="post-content">
+                    <p><strong>Finding the first 10 digit prime in the decimal expansion of 17pi</strong></p>
+<blockquote>
+<p>Helper functions:</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> mpmath <span style="color:#f92672">import</span> mpmath
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_pi</span>(n):
+    <span style="color:#e6db74">&#34;&#34;&#34;Returns the first n digits of pi&#34;&#34;&#34;</span>
+    mp<span style="color:#f92672">.</span>dps <span style="color:#f92672">=</span> n
+    <span style="color:#66d9ef">return</span> mp<span style="color:#f92672">.</span>pi
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">check_prime</span>(n):    
+    <span style="color:#e6db74">&#34;&#34;&#34;Checks if n is prime by searching range(2,sqrt(n)) for factors&#34;&#34;&#34;</span>
+    prime_flag <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+
+    <span style="color:#66d9ef">if</span> n <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">1</span>:
+        <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">2</span>, int(np<span style="color:#f92672">.</span>sqrt(n)) <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>):
+            <span style="color:#66d9ef">if</span> (n <span style="color:#f92672">%</span> i <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>):
+                prime_flag <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+                <span style="color:#66d9ef">break</span>
+        <span style="color:#66d9ef">if</span> (prime_flag <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>):
+            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">True</span>
+        <span style="color:#66d9ef">else</span>:
+            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">False</span>
+    <span style="color:#66d9ef">else</span>:
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">False</span>
+</code></pre></div><blockquote>
+<p>My solution:</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">check_expansion</span>(prec<span style="color:#f92672">=</span><span style="color:#ae81ff">50</span>):
+    <span style="color:#e6db74">&#34;&#34;&#34;Check if 10 digit values in the decimal expansion of 17pi are prime&#34;&#34;&#34;</span>
+    seventeen_pi_expansion <span style="color:#f92672">=</span> str(<span style="color:#ae81ff">17</span><span style="color:#f92672">*</span>get_pi(prec))<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#34;.&#34;</span>)[<span style="color:#ae81ff">1</span>]
+    length <span style="color:#f92672">=</span> len(seventeen_pi_expansion)
+    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(length<span style="color:#f92672">-</span><span style="color:#ae81ff">10</span>):
+        window <span style="color:#f92672">=</span> seventeen_pi_expansion[i:i<span style="color:#f92672">+</span><span style="color:#ae81ff">10</span>]
+        <span style="color:#66d9ef">if</span> check_prime(int(window)):
+            print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>window<span style="color:#e6db74">}</span><span style="color:#e6db74"> is the first 10 digit prime in the decimal expansion of 17pi&#34;</span>)
+            <span style="color:#66d9ef">break</span>
+    <span style="color:#66d9ef">else</span>:
+        print(<span style="color:#e6db74">&#34;10 digit prime not found, increase the precision&#34;</span>)
+</code></pre></div><blockquote>
+<p>My approach:</p>
+</blockquote>
+<p>There are three parts to answering this question.</p>
+<ol>
+<li>Write a function that generates a decimal expansion of 17pi to a given precision.</li>
+<li>Write a function that checks if a given value is prime.</li>
+<li>Write a function that applies the prime checker to a sliding 10 digit window of the prime expansion.</li>
+</ol>
+<p>To assist in getting the prime expansion of 17pi used the mpmath which allows you to specify the desired precision of a decimal.<br>
+What the get_pi function return is an mpmath object which must be converted to a string.</p>
+<p>The check if a given value (n) is prime, I wrote a function that checks all values between 2 and the square root of n.<br>
+If any of these numbers is found to be a factor of n, then n is not prime.</p>
+<p>Creating the sliding window function is rather trivial using slicing since the decimal expansion of 17pi is already in string form.<br>
+The function converts a given 10 digit value to an integer and applies the prime checker.</p>
+
+                </div>
+            </section>
+
+        </article>
+
+    </div>
+</main>
+<aside class="read-next outer">
+    <div class="inner">
+        <div class="read-next-feed"><article class="post-card post
+ no-image
+ ">
+
+        
+    
+        <div class="post-card-content">
+    
+            <a class="post-card-content-link" href="https://malcolmsfraser.github.io/post/projecteuler_119/">
+    
+                <header class="post-card-header">
+                    
+                        
+                        <div class="post-card-primary-tag">euler</div>
+                    
+
+                    <h2 class="post-card-title">Project Euler: Problem 119</h2>
+                </header>
+    
+                <section class="post-card-excerpt">
+                    <p>Digit power sum (solved by 12212 as of 9/1/2021)
+The number 512 is interesting because it is equal to the sum of its digits raised to some power: 5 + 1 + 2 = 8, and 83 = 512. Another example of a number with this property is 614656 = 284.
+We shall define an to be the nth term of this sequence and insist that a number must contain at least two digits to have a sum.</p>
+                </section>
+    
+            </a>
+
+            <footer class="post-card-meta">
+                    <ul class="author-list">
+                        <li class="author-list-item">
+                            <div class="author-name-tooltip">Malcolm Smith Fraser</div>
+                            <a href="#" class="static-avatar author-profile-image"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="M3.513 18.998C4.749 15.504 8.082 13 12 13s7.251 2.504 8.487 5.998C18.47 21.442 15.417 23 12 23s-6.47-1.558-8.487-4.002zM12 12c2.21 0 4-2.79 4-5s-1.79-4-4-4-4 1.79-4 4 1.79 5 4 5z" fill="#FFF"/></g></svg></a>
+                        </li>
+                    </ul>
+                    <div class="post-card-byline-content">
+                        <span>Malcolm Smith Fraser</span>
+                        <span class="post-card-byline-date"><time datetime="2021-69-09">2 September 2021</time>
+                            <span class="bull">&bull;</span> 2 min read</span>
+                    </div>
+                </footer>
+    
+        </div>
+
+</article>
+    
+
+            
+        </div>
+    </div>
+</aside>
+
+
+        <footer class="site-footer outer">
+            <div class="site-footer-content inner">
+                <section class="copyright"><a href="https://malcolmsfraser.github.io">Malcolm Smith Fraser</a> &copy; 2021</section>
+                <nav class="site-footer-nav">
+                    <a href="https://malcolmsfraser.github.io">Latest Posts</a>
+                    <a href="https://facebook.com" target="_blank" rel="noopener">Facebook</a>
+                    
+                    <a href="https://github.com/malcolmsfraser" target="_blank" rel="noopener">Github</a>
+                    <a href="https://jonathanjanssens.com" target="_blank" rel="noopener" style="opacity: 0.5;">Hugo Casper3 by Jonathan Janssens</a>
+                </nav>
+            </div>
+        </footer>
+
+    </div>
+
+</body>
+</html>
