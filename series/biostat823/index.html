@@ -80,7 +80,7 @@
                 <section class="post-card-excerpt">
                     <p>Finding the first 10 digit prime in the decimal expansion of 17pi
  Helper functions:
- from mpmath import mpmath def get_pi(n): &#34;&#34;&#34;Returns the first n digits of pi&#34;&#34;&#34; mp.dps = n return mp.pi def check_prime(n): &#34;&#34;&#34;Checks if n is prime by searching range(2,sqrt(n)) for factors&#34;&#34;&#34; prime_flag = 0 if n &gt; 1: for i in range(2, int(np.sqrt(n)) + 1): if (n % i == 0): prime_flag = 1 break if (prime_flag == 0): return True else: return False else: return False  My solution:</p>
+ from mpmath import mpmath def get_pi(n): &#34;&#34;&#34;Returns the first n digits of pi&#34;&#34;&#34; mp.dps = n return mp.pi def check_prime(n): &#34;&#34;&#34;Checks if n is prime by searching range(2,sqrt(n)) for factors&#34;&#34;&#34; prime_flag = 0 if n &gt; 1: for i in range(2, int(n**.5) + 1): if (n % i == 0): prime_flag = 1 break if (prime_flag == 0): return True else: return False else: return False  My solution:</p>
                 </section>
     
             </a>

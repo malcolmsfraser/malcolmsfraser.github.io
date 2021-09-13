@@ -111,7 +111,7 @@
     prime_flag <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
 
     <span style="color:#66d9ef">if</span> n <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">1</span>:
-        <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">2</span>, int(np<span style="color:#f92672">.</span>sqrt(n)) <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>):
+        <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">2</span>, int(n<span style="color:#f92672">**</span><span style="color:#ae81ff">.5</span>) <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>):
             <span style="color:#66d9ef">if</span> (n <span style="color:#f92672">%</span> i <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>):
                 prime_flag <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
                 <span style="color:#66d9ef">break</span>
@@ -125,7 +125,7 @@
 <p>My solution:</p>
 </blockquote>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">check_expansion</span>(prec<span style="color:#f92672">=</span><span style="color:#ae81ff">50</span>):
-    <span style="color:#e6db74">&#34;&#34;&#34;Check if 10 digit values in the decimal expansion of 17pi are prime&#34;&#34;&#34;</span>
+    <span style="color:#e6db74">&#34;&#34;&#34;Checks if 10 digit values in the decimal expansion of 17pi are prime&#34;&#34;&#34;</span>
     seventeen_pi_expansion <span style="color:#f92672">=</span> str(<span style="color:#ae81ff">17</span><span style="color:#f92672">*</span>get_pi(prec))<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#34;.&#34;</span>)[<span style="color:#ae81ff">1</span>]
     length <span style="color:#f92672">=</span> len(seventeen_pi_expansion)
     <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(length<span style="color:#f92672">-</span><span style="color:#ae81ff">10</span>):
