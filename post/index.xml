@@ -6,7 +6,16 @@
     <description>Recent content in Posts on Malcolm Smith Fraser</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 12 Sep 2021 23:40:47 +0000</lastBuildDate><atom:link href="https://malcolmsfraser.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 30 Sep 2021 18:15:11 +0000</lastBuildDate><atom:link href="https://malcolmsfraser.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Malaria Visualizations</title>
+      <link>https://malcolmsfraser.github.io/post/malaria-visualizations/</link>
+      <pubDate>Thu, 30 Sep 2021 18:15:11 +0000</pubDate>
+      
+      <guid>https://malcolmsfraser.github.io/post/malaria-visualizations/</guid>
+      <description>   Plotly.d3.json(&#34;/static/deaths_by_age_all_years.json&#34;, function(err, fig) { Plotly.plot(&#39;\/static\/deaths_by_age_all_years.json&#39;, fig.data, fig.layout, {responsive: true}); });  </description>
+    </item>
+    
     <item>
       <title>Ten Digit Prime</title>
       <link>https://malcolmsfraser.github.io/post/ten-digit-prime/</link>
