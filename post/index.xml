@@ -13,7 +13,9 @@
       <pubDate>Thu, 30 Sep 2021 18:15:11 +0000</pubDate>
       
       <guid>https://malcolmsfraser.github.io/post/malaria-visualizations/</guid>
-      <description>   Plotly.d3.json(&#34;deaths_by_age_all_years.json&#34;, function(err, fig) { Plotly.plot(&#39;deaths_by_age_all_years.json&#39;, fig.data, fig.layout, {responsive: true}); });   html, body, #container { height: 100%; } body, #container { overflow: hidden; margin: 0; } #iframe { width: 100%; height: 100%; border: none; }     </description>
+      <description>Plotly.d3.json(&#34;deaths_by_age_all_years.json&#34;, function(err, fig) { Plotly.plot(&#39;deaths_by_age_all_years.json&#39;, fig.data, fig.layout, {responsive: true}); });   window.PlotlyConfig = {MathJaxConfig: &#39;local&#39;};   window.PLOTLYENV=window.PLOTLYENV || {}; if (document.getElementById(&#34;9fa611e9-3369-40cc-b1ab-a2fec675d9e8&#34;)) { Plotly.newPlot( &#39;9fa611e9-3369-40cc-b1ab-a2fec675d9e8&#39;, [{&#34;hovertemplate&#34;: &#34;age_group=15-49
+year=%{x}
+deaths=%{y}&#34;, &#34;legendgroup&#34;: &#34;15-49&#34;, &#34;line&#34;: {&#34;color&#34;: &#34;#636efa&#34;, &#34;dash&#34;: &#34;solid&#34;}, &#34;mode&#34;: &#34;markers+lines&#34;, &#34;name&#34;: &#34;15-49&#34;, &#34;orientation&#34;: &#34;v&#34;, &#34;showlegend&#34;: true, &#34;type&#34;: &#34;scatter&#34;, &#34;x&#34;: [1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016], &#34;</description>
     </item>
     
     <item>
