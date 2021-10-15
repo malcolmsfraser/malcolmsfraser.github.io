@@ -101,10 +101,10 @@ for visualizing and comparing data on post-PhD activities of 2017 graduates by s
 <p>Streamlit is one of most popular python webapp and dashboarding tools out there today.
 It links connects almost seamlessly with many of the visualization tools in the
 Python DS ecosystem, and has tons of options for customization.</p>
-<p><img src="/static/streamlit-demo-fulldashboard.png" alt="Example image"></p>
+<p><img src="/static/images/streamlit-demo-fulldashboard.png" alt="Example image"></p>
 <p>Let&rsquo;s get started!</p>
-<p><strong>Part 1: Analyze the data</strong>
-Before moving to Streamlit, I started in a Jupyter notebook to explore the data,
+<h2 id="part-1-analyze-the-data"><strong>Part 1: Analyze the data</strong></h2>
+<p>Before moving to Streamlit, I started in a Jupyter notebook to explore the data,
 find some interesting visualizations and overall just get a feel for the data -
 both content and structure.</p>
 <p>The data I used came from the National Center for Science and Engineering Statistics
@@ -153,7 +153,7 @@ data_split = {
     &quot;combined&quot;: combined_data_clean
 }
 </code></pre><p>Now that the data is split reformatted it looks like this</p>
-<p><img src="/static/streamlit-demo-dataframe1.png" alt="Example image"></p>
+<p><img src="/static/images/streamlit-demo-dataframe1.png" alt="Example image"></p>
 <p>Next I tried to understand how I could visualize the data. To keep things simple,
 I looked at some barplots I created with plotly express.</p>
 <pre><code class="language-{python}" data-lang="{python}">graph = px.bar(
@@ -183,7 +183,7 @@ I looked at some barplots I created with plotly express.</p>
         </div>
 
 <p>Now that I have my data formatted and have the plots I want, I can start building the dashboard.</p>
-<p><strong>Part 2: Build the dashboard</strong></p>
+<h2 id="part-2-build-the-dashboard"><strong>Part 2: Build the dashboard</strong></h2>
 <p>The idea for the dashboard is to have a sidebar where the user can select the
 gender of the data they want to visualize as well as the variable they want to
 visualize for that gender. I also want the user to be able decide if they want to
@@ -209,7 +209,7 @@ post_grad_status = full_data_clean.iloc[:,0:1].columns.append(full_data_clean.il
 post_grad_study_type = full_data_clean.iloc[:,0:1].columns.append(full_data_clean.iloc[:,6:8].columns)
 post_grad_employment_type = full_data_clean.iloc[:,0:1].columns.append(full_data_clean.iloc[:,8:13].columns)
 </code></pre><p>Alright, now that that&rsquo;s out of the way lets get building.</p>
-<p><em>Building the sidebar</em></p>
+<h3 id="building-the-sidebar"><em>Building the sidebar</em></h3>
 <p>Create a new python file named dashboard.py and import your packeges.</p>
 <pre><code class="language-{python}" data-lang="{python}">import streamlit as st
 import pandas as pd
@@ -236,8 +236,9 @@ select_data = data_split[select_gender][categories[select_category]]
 # select variable from category
 select_variable = st.sidebar.radio(&quot;Variable&quot;, select_data.drop(&quot;Field&quot;,axis=1).columns)
 </code></pre><p>Now if you run <code>streamlit run dashboard.py</code> you should get something like this.
-<img src="/static/streamlit-demo-sidebar1.png" alt="Example image"></p>
+<img src="/static/images/streamlit-demo-sidebar1.png" alt="Example image"></p>
 <p>We will get to the &ldquo;compare&rdquo; options later.</p>
+<h3 id="dashboard-body">Dashboard Body</h3>
 <p>In the body of our dashboard we add the option to view the raw data.</p>
 <pre><code class="language-{python}" data-lang="{python}">if st.checkbox('Show raw data'):
     st.subheader('Raw data')
@@ -290,7 +291,7 @@ inside the same &ldquo;Hide Graph&rdquo; if statement.</p>
          # Add the plot to the streamlit dashboard in column 1
         col2.plotly_chart(graph2)  
 </code></pre><p>The resulting dashboard should look something like this
-<img src="/static/streamlit-demo-fulldashboard.png" alt="Example image"></p>
+<img src="/static/images/streamlit-demo-fulldashboard.png" alt="Example image"></p>
 <p>I hope you found this walkthrough useful!</p>
 
                 </div>
