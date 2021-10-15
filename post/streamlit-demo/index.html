@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    
+    
+    <title>Streamlit Demo · Malcolm Smith Fraser</title>
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    
+    <link rel="stylesheet" href="https://malcolmsfraser.github.io/style.main.min.5ea2f07be7e07e221a7112a3095b89d049b96c48b831f16f1015bf2d95d914e5.css" />
+
+</head>
+<body class=" post-template ">
+
+    <div class="site-wrapper">
+
+<header class="site-header"><div class="outer site-nav-main">
+    <div class="inner"><nav class="site-nav">
+    <div class="site-nav-left">
+        
+            <a class="site-nav-logo" href="https://malcolmsfraser.github.io">Malcolm Smith Fraser</a>
+        
+        
+        <div class="site-nav-content">
+            <ul class="nav" role="menu">
+                
+                <li class="nav-home" role="menuitem"><a href="/about/">About</a></li>
+                
+                <li class="nav-home" role="menuitem"><a href="/image-credit/">Image Credit</a></li>
+                
+                <li class="nav-home" role="menuitem"><a href="https://github.com/malcolmsfraser">My Github</a></li>
+                
+                <li class="nav-home" role="menuitem"><a href="https://malcolmsfraser.github.io">Author Homepage</a></li>
+                
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+</div>
+</div></header>
+
+<main id="site-main" class="site-main outer">
+    <div class="inner">
+
+        <article class="post-full post  no-image ">
+
+            <header class="post-full-header">
+
+                
+
+                <h1 class="post-full-title">Streamlit Demo</h1>
+
+                
+
+                <div class="post-full-byline">
+                    <section class="post-full-byline-content">
+
+                        <ul class="author-list">
+    <li class="author-list-item">
+        <div class="author-card">
+            <div class="author-profile-image"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="M3.513 18.998C4.749 15.504 8.082 13 12 13s7.251 2.504 8.487 5.998C18.47 21.442 15.417 23 12 23s-6.47-1.558-8.487-4.002zM12 12c2.21 0 4-2.79 4-5s-1.79-4-4-4-4 1.79-4 4 1.79 5 4 5z" fill="#FFF"/></g></svg></div>
+            <div class="author-info">
+                <div class="author-info">
+                    <h2>Malcolm Smith Fraser</h2>
+                </div>
+            </div>
+        </div>
+        <a href="#" class="author-avatar author-profile-image"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="M3.513 18.998C4.749 15.504 8.082 13 12 13s7.251 2.504 8.487 5.998C18.47 21.442 15.417 23 12 23s-6.47-1.558-8.487-4.002zM12 12c2.21 0 4-2.79 4-5s-1.79-4-4-4-4 1.79-4 4 1.79 5 4 5z" fill="#FFF"/></g></svg></a>
+    </li>
+</ul>
+
+                        <section class="post-full-byline-meta">
+                            
+                                <h4 class="author-name">Malcolm Smith Fraser</h4>
+                            
+                            <div class="byline-meta-content">
+                                <time class="byline-meta-date" datetime="2021-810-10">15 October 2021</time>
+                                <span class="byline-reading-time"><span class="bull">&bull;</span> 9 min read</span>
+                            </div>
+                        </section>
+
+                    </section>
+
+
+                </div>
+            </header>
+
+            
+
+            <section class="post-full-content">
+                <div class="post-content">
+                    <p>In this blog post I will walk through how I used streamlit to build a dashboard
+for visualizing and comparing data on post-PhD activities of 2017 graduates by sex.</p>
+<p>Streamlit is one of most popular python webapp and dashboarding tools out there today.
+It links connects almost seamlessly with many of the visualization tools in the
+Python DS ecosystem, and has tons of options for customization.</p>
+<p><img src="/static/streamlit-demo-fulldashboard.png" alt="Example image"></p>
+<p>Let&rsquo;s get started!</p>
+<p><strong>Part 1: Analyze the data</strong>
+Before moving to Streamlit, I started in a Jupyter notebook to explore the data,
+find some interesting visualizations and overall just get a feel for the data -
+both content and structure.</p>
+<p>The data I used came from the National Center for Science and Engineering Statistics
+(<a href="https://ncses.nsf.gov/pubs/nsf19301/data),">https://ncses.nsf.gov/pubs/nsf19301/data),</a> and uses the table that covers
+postgraduation plans of doctorate recipients, by sex and broad field of study for 2017.
+The is essentially 3 tables stacked together: one for male, one for female, and
+a combined sex table. Also for this data exploration I was primarily interested
+in exploring enginnering, math and science degree recipients.</p>
+<p>Loading, splitting and cleaning the data</p>
+<pre><code class="language-{python}" data-lang="{python}"># Function for loading and splitting data
+def load_data():
+    data=pd.read_excel(&quot;sed17-sr-tab055.xlsx&quot;,header=3,index_col=0)
+    female_data = data[-42:]
+    male_data = data[42:-42]
+    combined_data = data[:42]
+    return male_data, female_data, combined_data
+  
+# Function for cleaning data
+def clean_filter(df):
+    sci_eng = (
+        df.
+        filter(regex='(science|Engineer)').
+        rename({&quot;Life sciencesa&quot;:&quot;Life sciences&quot;}, axis=1).
+        dropna(axis=0).
+        T.
+        reset_index().
+        rename_axis(None, axis=1).
+        rename({&quot;index&quot;:&quot;Field&quot;,
+                &quot;All doctorate recipients (number)c&quot;: &quot;Total doctorate recipients&quot;,
+                &quot;Male doctorate recipients (number)&quot;: &quot;Total doctorate recipients&quot;,
+                &quot;Female doctorate recipients (number)&quot;: &quot;Total doctorate recipients&quot;},axis=1)
+    )
+    return sci_eng
+# Load data
+male_data, female_data, full_data = load_data()
+
+# Clean data
+male_data_clean = clean_filter(male_data)
+female_data_clean = clean_filter(female_data)
+full_data_clean = clean_filter(full_data)
+
+# Organize data splits
+data_split = {
+    &quot;male&quot;: male_data_clean,
+    &quot;female&quot;: female_data_clean,
+    &quot;combined&quot;: combined_data_clean
+}
+</code></pre><p>Now that the data is split reformatted it looks like this</p>
+<p><img src="/static/streamlit-demo-dataframe1.png" alt="Example image"></p>
+<p>Next I tried to understand how I could visualize the data. To keep things simple,
+I looked at some barplots I created with plotly express.</p>
+<pre><code class="language-{python}" data-lang="{python}">graph = px.bar(
+    data_split['combined'].sort_values(&quot;Total doctorate recipients&quot;, ascending=False), 
+    x = 'Field',
+    y = &quot;Total doctorate recipients&quot;,
+    labels = {'Number of cases':'Number of cases in %s'},
+    color = 'Field'
+    )
+</code></pre>
+
+        <div id="f49aa1f2-7772-4758-b8bc-ed3fc9f18765" class="plotly-graph-div" style="height:100%; width:100%;"></div>
+            <script type="text/javascript">
+                
+                    window.PLOTLYENV=window.PLOTLYENV || {};
+                    
+                if (document.getElementById("f49aa1f2-7772-4758-b8bc-ed3fc9f18765")) {
+                    Plotly.newPlot(
+                        'f49aa1f2-7772-4758-b8bc-ed3fc9f18765',
+                        [{"alignmentgroup": "True", "hovertemplate": "Field=%{x}<br>Total doctorate recipients=%{y}<extra></extra>", "legendgroup": "Life sciences", "marker": {"color": "#636efa"}, "name": "Life sciences", "offsetgroup": "Life sciences", "orientation": "v", "showlegend": true, "textposition": "auto", "type": "bar", "x": ["Life sciences"], "xaxis": "x", "y": [12592.0], "yaxis": "y"}, {"alignmentgroup": "True", "hovertemplate": "Field=%{x}<br>Total doctorate recipients=%{y}<extra></extra>", "legendgroup": "Engineering", "marker": {"color": "#EF553B"}, "name": "Engineering", "offsetgroup": "Engineering", "orientation": "v", "showlegend": true, "textposition": "auto", "type": "bar", "x": ["Engineering"], "xaxis": "x", "y": [9843], "yaxis": "y"}, {"alignmentgroup": "True", "hovertemplate": "Field=%{x}<br>Total doctorate recipients=%{y}<extra></extra>", "legendgroup": "Psychology and social sciences", "marker": {"color": "#00cc96"}, "name": "Psychology and social sciences", "offsetgroup": "Psychology and social sciences", "orientation": "v", "showlegend": true, "textposition": "auto", "type": "bar", "x": ["Psychology and social sciences"], "xaxis": "x", "y": [9079], "yaxis": "y"}, {"alignmentgroup": "True", "hovertemplate": "Field=%{x}<br>Total doctorate recipients=%{y}<extra></extra>", "legendgroup": "Physical sciences and earth sciences", "marker": {"color": "#ab63fa"}, "name": "Physical sciences and earth sciences", "offsetgroup": "Physical sciences and earth sciences", "orientation": "v", "showlegend": true, "textposition": "auto", "type": "bar", "x": ["Physical sciences and earth sciences"], "xaxis": "x", "y": [6081.0], "yaxis": "y"}, {"alignmentgroup": "True", "hovertemplate": "Field=%{x}<br>Total doctorate recipients=%{y}<extra></extra>", "legendgroup": "Mathematics and computer sciences", "marker": {"color": "#FFA15A"}, "name": "Mathematics and computer sciences", "offsetgroup": "Mathematics and computer sciences", "orientation": "v", "showlegend": true, "textposition": "auto", "type": "bar", "x": ["Mathematics and computer sciences"], "xaxis": "x", "y": [3843], "yaxis": "y"}],
+                        {"barmode": "relative", "legend": {"title": {"text": "Field"}, "tracegroupgap": 0}, "margin": {"t": 60}, "template": {"data": {"bar": [{"error_x": {"color": "#2a3f5f"}, "error_y": {"color": "#2a3f5f"}, "marker": {"line": {"color": "#E5ECF6", "width": 0.5}}, "type": "bar"}], "barpolar": [{"marker": {"line": {"color": "#E5ECF6", "width": 0.5}}, "type": "barpolar"}], "carpet": [{"aaxis": {"endlinecolor": "#2a3f5f", "gridcolor": "white", "linecolor": "white", "minorgridcolor": "white", "startlinecolor": "#2a3f5f"}, "baxis": {"endlinecolor": "#2a3f5f", "gridcolor": "white", "linecolor": "white", "minorgridcolor": "white", "startlinecolor": "#2a3f5f"}, "type": "carpet"}], "choropleth": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "type": "choropleth"}], "contour": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "type": "contour"}], "contourcarpet": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "type": "contourcarpet"}], "heatmap": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "type": "heatmap"}], "heatmapgl": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "type": "heatmapgl"}], "histogram": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "histogram"}], "histogram2d": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "type": "histogram2d"}], "histogram2dcontour": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "type": "histogram2dcontour"}], "mesh3d": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "type": "mesh3d"}], "parcoords": [{"line": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "parcoords"}], "pie": [{"automargin": true, "type": "pie"}], "scatter": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scatter"}], "scatter3d": [{"line": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scatter3d"}], "scattercarpet": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scattercarpet"}], "scattergeo": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scattergeo"}], "scattergl": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scattergl"}], "scattermapbox": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scattermapbox"}], "scatterpolar": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scatterpolar"}], "scatterpolargl": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scatterpolargl"}], "scatterternary": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scatterternary"}], "surface": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "type": "surface"}], "table": [{"cells": {"fill": {"color": "#EBF0F8"}, "line": {"color": "white"}}, "header": {"fill": {"color": "#C8D4E3"}, "line": {"color": "white"}}, "type": "table"}]}, "layout": {"annotationdefaults": {"arrowcolor": "#2a3f5f", "arrowhead": 0, "arrowwidth": 1}, "coloraxis": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "colorscale": {"diverging": [[0, "#8e0152"], [0.1, "#c51b7d"], [0.2, "#de77ae"], [0.3, "#f1b6da"], [0.4, "#fde0ef"], [0.5, "#f7f7f7"], [0.6, "#e6f5d0"], [0.7, "#b8e186"], [0.8, "#7fbc41"], [0.9, "#4d9221"], [1, "#276419"]], "sequential": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "sequentialminus": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]]}, "colorway": ["#636efa", "#EF553B", "#00cc96", "#ab63fa", "#FFA15A", "#19d3f3", "#FF6692", "#B6E880", "#FF97FF", "#FECB52"], "font": {"color": "#2a3f5f"}, "geo": {"bgcolor": "white", "lakecolor": "white", "landcolor": "#E5ECF6", "showlakes": true, "showland": true, "subunitcolor": "white"}, "hoverlabel": {"align": "left"}, "hovermode": "closest", "mapbox": {"style": "light"}, "paper_bgcolor": "white", "plot_bgcolor": "#E5ECF6", "polar": {"angularaxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}, "bgcolor": "#E5ECF6", "radialaxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}}, "scene": {"xaxis": {"backgroundcolor": "#E5ECF6", "gridcolor": "white", "gridwidth": 2, "linecolor": "white", "showbackground": true, "ticks": "", "zerolinecolor": "white"}, "yaxis": {"backgroundcolor": "#E5ECF6", "gridcolor": "white", "gridwidth": 2, "linecolor": "white", "showbackground": true, "ticks": "", "zerolinecolor": "white"}, "zaxis": {"backgroundcolor": "#E5ECF6", "gridcolor": "white", "gridwidth": 2, "linecolor": "white", "showbackground": true, "ticks": "", "zerolinecolor": "white"}}, "shapedefaults": {"line": {"color": "#2a3f5f"}}, "ternary": {"aaxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}, "baxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}, "bgcolor": "#E5ECF6", "caxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}}, "title": {"x": 0.05}, "xaxis": {"automargin": true, "gridcolor": "white", "linecolor": "white", "ticks": "", "title": {"standoff": 15}, "zerolinecolor": "white", "zerolinewidth": 2}, "yaxis": {"automargin": true, "gridcolor": "white", "linecolor": "white", "ticks": "", "title": {"standoff": 15}, "zerolinecolor": "white", "zerolinewidth": 2}}}, "xaxis": {"anchor": "y", "categoryarray": ["Life sciences", "Engineering", "Psychology and social sciences", "Physical sciences and earth sciences", "Mathematics and computer sciences"], "categoryorder": "array", "domain": [0.0, 1.0], "title": {"text": "Field"}}, "yaxis": {"anchor": "x", "domain": [0.0, 1.0], "title": {"text": "Total doctorate recipients"}}},
+                        {"responsive": true}
+                    )
+                };
+                
+            </script>
+        </div>
+
+<p>Now that I have my data formatted and have the plots I want, I can start building the dashboard.</p>
+<p><strong>Part 2: Build the dashboard</strong></p>
+<p>The idea for the dashboard is to have a sidebar where the user can select the
+gender of the data they want to visualize as well as the variable they want to
+visualize for that gender. I also want the user to be able decide if they want to
+compare the anlysis and select which sex/combined they will compare with.
+Once selected, the visualizations will be displayed in the main area, with an
+option to display the raw data. Lastly, want to give the user an option to hide
+the graph.</p>
+<p>Before we start I want to organize the data in a way that makes it easy for the
+user to pic the variables to visualize. From the structure of the table, I noticed
+that the columns could be grouped into the following categories:</p>
+<ul>
+<li>Post Grad Status (#),</li>
+<li>Post Grad Employment Type (%)</li>
+<li>Post Grad Study Type (%)</li>
+<li>Post Grad Location (%)
+along with a column for total degree recipients and a columns for the degree field.</li>
+</ul>
+<p>I decided to record the splits based on the categories. The decision to do this
+will become more obvious when we start building the dashboard.</p>
+<pre><code class="language-{python}" data-lang="{python}">total_phd_recipients = full_data_clean.iloc[:,0:1].columns.append(full_data_clean.iloc[:,1:2].columns)
+post_grad_location = full_data_clean.iloc[:,0:1].columns.append(full_data_clean.iloc[:,-12:-1].columns)
+post_grad_status = full_data_clean.iloc[:,0:1].columns.append(full_data_clean.iloc[:,2:6].columns)
+post_grad_study_type = full_data_clean.iloc[:,0:1].columns.append(full_data_clean.iloc[:,6:8].columns)
+post_grad_employment_type = full_data_clean.iloc[:,0:1].columns.append(full_data_clean.iloc[:,8:13].columns)
+</code></pre><p>Alright, now that that&rsquo;s out of the way lets get building.</p>
+<p><em>Building the sidebar</em></p>
+<p>Create a new python file named dashboard.py and import your packeges.</p>
+<pre><code class="language-{python}" data-lang="{python}">import streamlit as st
+import pandas as pd
+import numpy as np
+import plotly.express as px
+</code></pre><p>Setup the streamlit dashboard config, title, and headers/subheaders.</p>
+<pre><code class="language-{python}" data-lang="{python}">st.set_page_config(page_title=&quot;My Dashboard&quot;,layout='wide')
+st.title(&quot;**Post-PhD activities for US Science and Engineering Grads**&quot;)
+st.header(&quot;Gender Level Analysis&quot;)
+st.caption(&quot;Data from https://ncses.nsf.gov/pubs/nsf19301/data&quot;)
+</code></pre><p>Then load, filter, and organize your data the exact same way as we did when analyzing the data (see above).</p>
+<p>In the sidebar I will use select boxes for selecting the gender and category.
+For selecting the individual variables within the categories in will use a radio
+button widget.</p>
+<pre><code class="language-{python}" data-lang="{python}"># select gender
+select_gender = st.sidebar.selectbox('Select Gender',[&quot;male&quot;,&quot;female&quot;,&quot;combined&quot;],key=1)
+
+# select category
+select_category = st.sidebar.selectbox(&quot;Analysis Category&quot;, [&quot;Total Recipients&quot;, &quot;Post Grad Status (#)&quot;,'Post Grad Employment Type (%)',&quot;Post Grad Study Type (%)&quot;,&quot;Post Grad Location (%)&quot;])
+
+# subset data based on gender and category
+select_data = data_split[select_gender][categories[select_category]]
+
+# select variable from category
+select_variable = st.sidebar.radio(&quot;Variable&quot;, select_data.drop(&quot;Field&quot;,axis=1).columns)
+</code></pre><p>Now if you run <code>streamlit run dashboard.py</code> you should get something like this.
+<img src="/static/streamlit-demo-sidebar1.png" alt="Example image"></p>
+<p>We will get to the &ldquo;compare&rdquo; options later.</p>
+<p>In the body of our dashboard we add the option to view the raw data.</p>
+<pre><code class="language-{python}" data-lang="{python}">if st.checkbox('Show raw data'):
+    st.subheader('Raw data')
+    st.dataframe(select_data)
+</code></pre><p>Next we will add the plots - that will only show if the option to hide the graphs is not selected.
+We also want to plot in two columns in case we decide to make a comparison plot.</p>
+<pre><code class="language-{python}" data-lang="{python}"># Create two columns
+col1, col2 = st.columns(2)
+
+# Create &quot;Hide Graph&quot; option
+if not st.checkbox('Hide Graph', False, key=1):
+    
+    # Plot title
+    col1.markdown(f&quot;### {select_variable}: {select_gender}&quot;)
+    
+    # Graph data with the variables selected above
+    graph = px.bar(
+        select_data.sort_values(select_variable, ascending=False), 
+        x='Field',
+        y=select_variable,
+        labels={'Number of cases':'Number of cases in %s'},
+        color='Field')
+        
+    # Optional: Adjust layout
+    graph.update_layout(width=700)
+    graph.layout.update(showlegend=False)
+    
+    # Add the plot to the streamlit dashboard in column 1
+    col1.plotly_chart(graph,width=700)
+</code></pre><p>Since we only want to compare a visualization if we already have generated a baseline one,
+now is when we add the comparison information. To do this we add the following
+inside the same &ldquo;Hide Graph&rdquo; if statement.</p>
+<pre><code class="language-{python}" data-lang="{python}">    # Create a &quot;Compare&quot; checkbox in the sidebar
+    if st.sidebar.checkbox(&quot;Compare&quot;,True, key=2):
+        
+        # Select the gender to compare with and grab the data split
+        select2 = st.sidebar.selectbox('Select Gender',[&quot;female&quot;,&quot;male&quot;,&quot;combined&quot;],key=2)
+        select_data2 = data_split[select2]
+        
+        # Graph the comparison plot
+        col2.markdown(f&quot;### {select_variable}: {select2}&quot;)
+        graph2 = px.bar(
+            select_data2.sort_values(select_variable, ascending=False), 
+            x='Field',
+            y=select_variable,
+            labels={'Number of cases':'Number of cases in %s'},
+            color='Field')
+        graph2.layout.update(showlegend=False)
+        
+         # Add the plot to the streamlit dashboard in column 1
+        col2.plotly_chart(graph2)  
+</code></pre><p>The resulting dashboard should look something like this
+<img src="/static/streamlit-demo-fulldashboard.png" alt="Example image"></p>
+<p>I hope you found this walkthrough useful!</p>
+
+                </div>
+            </section>
+
+        </article>
+
+    </div>
+</main>
+<aside class="read-next outer">
+    <div class="inner">
+        <div class="read-next-feed"><article class="post-card post
+ no-image
+ ">
+
+        
+    
+        <div class="post-card-content">
+    
+            <a class="post-card-content-link" href="https://malcolmsfraser.github.io/post/malaria-visualizations/">
+    
+                <header class="post-card-header">
+                    
+
+                    <h2 class="post-card-title">Malaria Visualizations</h2>
+                </header>
+    
+                <section class="post-card-excerpt">
+                    <p>In this post I briefly explore the malaria data from https://github.com/rfordatascience/tidytuesday/tree/master/data/2018/2018-11-13. The visualizations are made usingn geopandas and plotly. Geopandas just as simple as standard pandas but also allows for easier handling of geographical data. Plotly was my choice for the interactive visualizations as they are one of the easiest to export and embed with the help of the .to_html() function that all plotly figures have.
+This first visualization shows the distribution of malaria deaths in countries broken down by the quantiles of malaria deaths.</p>
+                </section>
+    
+            </a>
+
+            <footer class="post-card-meta">
+                    <ul class="author-list">
+                        <li class="author-list-item">
+                            <div class="author-name-tooltip">Malcolm Smith Fraser</div>
+                            <a href="#" class="static-avatar author-profile-image"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="M3.513 18.998C4.749 15.504 8.082 13 12 13s7.251 2.504 8.487 5.998C18.47 21.442 15.417 23 12 23s-6.47-1.558-8.487-4.002zM12 12c2.21 0 4-2.79 4-5s-1.79-4-4-4-4 1.79-4 4 1.79 5 4 5z" fill="#FFF"/></g></svg></a>
+                        </li>
+                    </ul>
+                    <div class="post-card-byline-content">
+                        <span>Malcolm Smith Fraser</span>
+                        <span class="post-card-byline-date"><time datetime="2021-69-09">30 September 2021</time>
+                            <span class="bull">&bull;</span> 168 min read</span>
+                    </div>
+                </footer>
+    
+        </div>
+
+</article>
+    
+
+            
+        </div>
+    </div>
+</aside>
+
+
+        <footer class="site-footer outer">
+            <div class="site-footer-content inner">
+                <section class="copyright"><a href="https://malcolmsfraser.github.io">Malcolm Smith Fraser</a> &copy; 2021</section>
+                <nav class="site-footer-nav">
+                    <a href="https://malcolmsfraser.github.io">Latest Posts</a>
+                    <a href="https://facebook.com" target="_blank" rel="noopener">Facebook</a>
+                    
+                    <a href="https://github.com/malcolmsfraser" target="_blank" rel="noopener">Github</a>
+                    <a href="https://jonathanjanssens.com" target="_blank" rel="noopener" style="opacity: 0.5;">Hugo Casper3 by Jonathan Janssens</a>
+                </nav>
+            </div>
+        </footer>
+
+    </div>
+
+</body>
+</html>

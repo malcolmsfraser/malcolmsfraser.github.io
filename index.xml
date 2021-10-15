@@ -6,7 +6,19 @@
     <description>Recent content on Malcolm Smith Fraser</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 30 Sep 2021 18:15:11 +0000</lastBuildDate><atom:link href="https://malcolmsfraser.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 15 Oct 2021 20:14:13 +0000</lastBuildDate><atom:link href="https://malcolmsfraser.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Streamlit Demo</title>
+      <link>https://malcolmsfraser.github.io/post/streamlit-demo/</link>
+      <pubDate>Fri, 15 Oct 2021 20:14:13 +0000</pubDate>
+      
+      <guid>https://malcolmsfraser.github.io/post/streamlit-demo/</guid>
+      <description>In this blog post I will walk through how I used streamlit to build a dashboard for visualizing and comparing data on post-PhD activities of 2017 graduates by sex.
+Streamlit is one of most popular python webapp and dashboarding tools out there today. It links connects almost seamlessly with many of the visualization tools in the Python DS ecosystem, and has tons of options for customization.
+Let&amp;rsquo;s get started!
+Part 1: Analyze the data Before moving to Streamlit, I started in a Jupyter notebook to explore the data, find some interesting visualizations and overall just get a feel for the data - both content and structure.</description>
+    </item>
+    
     <item>
       <title>Malaria Visualizations</title>
       <link>https://malcolmsfraser.github.io/post/malaria-visualizations/</link>
