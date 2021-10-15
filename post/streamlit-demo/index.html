@@ -101,7 +101,7 @@ for visualizing and comparing data on post-PhD activities of 2017 graduates by s
 <p>Streamlit is one of most popular python webapp and dashboarding tools out there today.
 It links connects almost seamlessly with many of the visualization tools in the
 Python DS ecosystem, and has tons of options for customization.</p>
-<p><img src="/static/images/streamlit-demo-fulldashboard.png" alt="Example image"></p>
+<p><img src="/images/streamlit-demo-fulldashboard.png" alt="Example image"></p>
 <p>Let&rsquo;s get started!</p>
 <h2 id="part-1-analyze-the-data"><strong>Part 1: Analyze the data</strong></h2>
 <p>Before moving to Streamlit, I started in a Jupyter notebook to explore the data,
@@ -153,7 +153,7 @@ data_split = {
     &quot;combined&quot;: combined_data_clean
 }
 </code></pre><p>Now that the data is split reformatted it looks like this</p>
-<p><img src="/static/images/streamlit-demo-dataframe1.png" alt="Example image"></p>
+<p><img src="/images/streamlit-demo-dataframe1.png" alt="Example image"></p>
 <p>Next I tried to understand how I could visualize the data. To keep things simple,
 I looked at some barplots I created with plotly express.</p>
 <pre><code class="language-{python}" data-lang="{python}">graph = px.bar(
@@ -236,7 +236,7 @@ select_data = data_split[select_gender][categories[select_category]]
 # select variable from category
 select_variable = st.sidebar.radio(&quot;Variable&quot;, select_data.drop(&quot;Field&quot;,axis=1).columns)
 </code></pre><p>Now if you run <code>streamlit run dashboard.py</code> you should get something like this.
-<img src="/static/images/streamlit-demo-sidebar1.png" alt="Example image"></p>
+<img src="/images/streamlit-demo-sidebar1.png" alt="Example image"></p>
 <p>We will get to the &ldquo;compare&rdquo; options later.</p>
 <h3 id="dashboard-body">Dashboard Body</h3>
 <p>In the body of our dashboard we add the option to view the raw data.</p>
@@ -291,7 +291,7 @@ inside the same &ldquo;Hide Graph&rdquo; if statement.</p>
          # Add the plot to the streamlit dashboard in column 1
         col2.plotly_chart(graph2)  
 </code></pre><p>The resulting dashboard should look something like this
-<img src="/static/images/streamlit-demo-fulldashboard.png" alt="Example image"></p>
+<img src="/images/streamlit-demo-fulldashboard.png" alt="Example image"></p>
 <p>I hope you found this walkthrough useful!</p>
 
                 </div>
