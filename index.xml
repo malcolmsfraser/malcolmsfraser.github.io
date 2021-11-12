@@ -6,7 +6,18 @@
     <description>Recent content on Malcolm Smith Fraser</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 15 Oct 2021 20:14:13 +0000</lastBuildDate><atom:link href="https://malcolmsfraser.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 12 Nov 2021 01:03:23 +0000</lastBuildDate><atom:link href="https://malcolmsfraser.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Explaining Tensorflow Predictions with SHapley Additive exPlanations</title>
+      <link>https://malcolmsfraser.github.io/post/tensorflow-shap/</link>
+      <pubDate>Fri, 12 Nov 2021 01:03:23 +0000</pubDate>
+      
+      <guid>https://malcolmsfraser.github.io/post/tensorflow-shap/</guid>
+      <description>In this post I cover how I to train a simple CNN using tensorflow, and explain the predictions using SHAP.
+SHAP (SHapley Additive exPlanations) is a method to explain predictions based on the game theory concept of optimal Shapley Values. In short, the goal of SHAP is to explain the prediction of an instance, x, by computing the contribution of each feature to the prediction.
+Training the model The model I train will be able to distinguish between dragonflies, cockroaches, and beetles.</description>
+    </item>
+    
     <item>
       <title>Streamlit Demo</title>
       <link>https://malcolmsfraser.github.io/post/streamlit-demo/</link>

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    
+    
+    <title>Explaining Tensorflow Predictions with SHapley Additive exPlanations · Malcolm Smith Fraser</title>
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    
+    <link rel="stylesheet" href="https://malcolmsfraser.github.io/style.main.min.5ea2f07be7e07e221a7112a3095b89d049b96c48b831f16f1015bf2d95d914e5.css" />
+
+</head>
+<body class=" post-template ">
+
+    <div class="site-wrapper">
+
+<header class="site-header"><div class="outer site-nav-main">
+    <div class="inner"><nav class="site-nav">
+    <div class="site-nav-left">
+        
+            <a class="site-nav-logo" href="https://malcolmsfraser.github.io">Malcolm Smith Fraser</a>
+        
+        
+        <div class="site-nav-content">
+            <ul class="nav" role="menu">
+                
+                <li class="nav-home" role="menuitem"><a href="/about/">About</a></li>
+                
+                <li class="nav-home" role="menuitem"><a href="/image-credit/">Image Credit</a></li>
+                
+                <li class="nav-home" role="menuitem"><a href="https://github.com/malcolmsfraser">My Github</a></li>
+                
+                <li class="nav-home" role="menuitem"><a href="https://malcolmsfraser.github.io">Author Homepage</a></li>
+                
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+</div>
+</div></header>
+
+<main id="site-main" class="site-main outer">
+    <div class="inner">
+
+        <article class="post-full post  no-image ">
+
+            <header class="post-full-header">
+
+                
+
+                <h1 class="post-full-title">Explaining Tensorflow Predictions with SHapley Additive exPlanations</h1>
+
+                
+
+                <div class="post-full-byline">
+                    <section class="post-full-byline-content">
+
+                        <ul class="author-list">
+    <li class="author-list-item">
+        <div class="author-card">
+            <div class="author-profile-image"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="M3.513 18.998C4.749 15.504 8.082 13 12 13s7.251 2.504 8.487 5.998C18.47 21.442 15.417 23 12 23s-6.47-1.558-8.487-4.002zM12 12c2.21 0 4-2.79 4-5s-1.79-4-4-4-4 1.79-4 4 1.79 5 4 5z" fill="#FFF"/></g></svg></div>
+            <div class="author-info">
+                <div class="author-info">
+                    <h2>Malcolm Smith Fraser</h2>
+                </div>
+            </div>
+        </div>
+        <a href="#" class="author-avatar author-profile-image"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="M3.513 18.998C4.749 15.504 8.082 13 12 13s7.251 2.504 8.487 5.998C18.47 21.442 15.417 23 12 23s-6.47-1.558-8.487-4.002zM12 12c2.21 0 4-2.79 4-5s-1.79-4-4-4-4 1.79-4 4 1.79 5 4 5z" fill="#FFF"/></g></svg></a>
+    </li>
+</ul>
+
+                        <section class="post-full-byline-meta">
+                            
+                                <h4 class="author-name">Malcolm Smith Fraser</h4>
+                            
+                            <div class="byline-meta-content">
+                                <time class="byline-meta-date" datetime="2021-111-11">12 November 2021</time>
+                                <span class="byline-reading-time"><span class="bull">&bull;</span> 4 min read</span>
+                            </div>
+                        </section>
+
+                    </section>
+
+
+                </div>
+            </header>
+
+            
+
+            <section class="post-full-content">
+                <div class="post-content">
+                    <p>In this post I cover how I to train a simple CNN using tensorflow, and explain
+the predictions using SHAP.</p>
+<p>SHAP (SHapley Additive exPlanations) is a method to explain predictions based on
+the game theory concept of optimal Shapley Values. In short, the goal of SHAP is
+to explain the prediction of an instance, x, by computing the contribution of
+each feature to the prediction.</p>
+<h3 id="training-the-model">Training the model</h3>
+<p>The model I train will be able to distinguish between dragonflies, cockroaches,
+and beetles. Original images can be found here (<a href="https://www.insectimages.org/index.cfm)">https://www.insectimages.org/index.cfm)</a>.
+I train on 1,199 images - with 816 images for training, 203 images for validation,
+and 180 images for testing.</p>
+<h4 id="import-dependencies-and-connect-to-the-dataset">Import dependencies and connect to the dataset</h4>
+<pre><code class="language-{python}" data-lang="{python}">import tensorflow as tf
+
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.layers import AveragePooling2D, Dropout, Flatten, Dense, Input
+from tensorflow.keras.models import Model
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.applications import ResNet50
+from sklearn.metrics import classification_report
+from imutils import paths
+import matplotlib.pyplot as plt
+import numpy as np
+
+
+train_dir = './insects/train'
+test_dir = './insects/test'
+
+BATCH_SIZE = 32
+IMG_SIZE = (224, 224)
+
+# initialize the training training data augmentation object
+trainAug = ImageDataGenerator(
+	validation_split=.2,
+	rotation_range=25,
+	zoom_range=0.1,
+	width_shift_range=0.1,
+	height_shift_range=0.1,
+	shear_range=0.2,
+	horizontal_flip=True,
+	fill_mode=&quot;nearest&quot;)
+	
+# initialize the validation/testing data augmentation object (which
+testAug = ImageDataGenerator()
+
+
+# initialize the training generator
+trainGen = trainAug.flow_from_directory(
+	train_dir,
+	subset='training',
+	seed=69,
+	class_mode=&quot;categorical&quot;,
+	target_size=IMG_SIZE,
+	color_mode=&quot;rgb&quot;,
+	shuffle=True,
+	batch_size=BATCH_SIZE)
+# initialize the validation generator
+valGen = trainAug.flow_from_directory(
+	train_dir,
+	subset='validation',
+	seed=69,
+	class_mode=&quot;categorical&quot;,
+	target_size=IMG_SIZE,
+	color_mode=&quot;rgb&quot;,
+	shuffle=False,
+	batch_size=BATCH_SIZE)
+# initialize the validation generator
+testGen = testAug.flow_from_directory(
+	test_dir,
+	class_mode=&quot;categorical&quot;,
+	target_size=IMG_SIZE,
+	color_mode=&quot;rgb&quot;,
+	shuffle=False,
+	batch_size=180)
+</code></pre><h4 id="model-configuration">Model configuration</h4>
+<p>For the model itself I use transfer learning on a resnet50 model pretrained on imagenet.
+I freeze all the layers in the pretrained model and train my own 5-layer model head.</p>
+<pre><code class="language-{python}" data-lang="{python}">baseModel = ResNet50(weights=&quot;imagenet&quot;, include_top=False,
+	input_tensor=Input(shape=(224, 224, 3)))
+# construct the head of the model that will be placed on top of the
+# the base model
+headModel = baseModel.output
+headModel = AveragePooling2D(pool_size=(7, 7))(headModel)
+headModel = Flatten(name=&quot;flatten&quot;)(headModel)
+headModel = Dense(256, activation=&quot;relu&quot;)(headModel)
+headModel = Dropout(0.5)(headModel)
+headModel = Dense(len(train_dataset.class_names), activation=&quot;softmax&quot;)(headModel)
+# place the head FC model on top of the base model (this will become
+# the actual model we will train)
+model = Model(inputs=baseModel.input, outputs=headModel)
+# loop over all layers in the base model and freeze them so they will
+# *not* be updated during the training process
+for layer in baseModel.layers:
+	layer.trainable = False
+</code></pre><h4 id="model-training">Model training</h4>
+<p>I train the model for 10 epochs with a learning rate of 0.0001.</p>
+<pre><code class="language-{python}" data-lang="{python}"># compile the model
+base_learning_rate = 0.0001
+
+opt = Adam(learning_rate=base_learning_rate)
+model.compile(loss=&quot;binary_crossentropy&quot;, optimizer=opt,
+	metrics=[&quot;accuracy&quot;])
+# train the model
+print(&quot;[INFO] training model...&quot;)
+H = model.fit(
+	trainGen,
+	validation_data=valGen,
+	epochs=10)
+</code></pre><pre><code>[INFO] training model...
+Epoch 1/10
+26/26 [==============================] - 17s 561ms/step - loss: 0.5831 - accuracy: 0.6042 - val_loss: 0.2954 - val_accuracy: 0.8670
+Epoch 2/10
+26/26 [==============================] - 13s 507ms/step - loss: 0.3075 - accuracy: 0.8444 - val_loss: 0.2106 - val_accuracy: 0.9212
+Epoch 3/10
+26/26 [==============================] - 13s 502ms/step - loss: 0.2339 - accuracy: 0.8934 - val_loss: 0.1869 - val_accuracy: 0.9212
+Epoch 4/10
+26/26 [==============================] - 13s 501ms/step - loss: 0.1948 - accuracy: 0.9154 - val_loss: 0.1625 - val_accuracy: 0.9261
+Epoch 5/10
+26/26 [==============================] - 13s 497ms/step - loss: 0.1590 - accuracy: 0.9375 - val_loss: 0.1665 - val_accuracy: 0.9261
+Epoch 6/10
+26/26 [==============================] - 13s 498ms/step - loss: 0.1539 - accuracy: 0.9338 - val_loss: 0.1394 - val_accuracy: 0.9360
+Epoch 7/10
+26/26 [==============================] - 13s 498ms/step - loss: 0.1384 - accuracy: 0.9485 - val_loss: 0.1449 - val_accuracy: 0.9261
+Epoch 8/10
+26/26 [==============================] - 13s 490ms/step - loss: 0.1282 - accuracy: 0.9522 - val_loss: 0.1314 - val_accuracy: 0.9409
+Epoch 9/10
+26/26 [==============================] - 13s 493ms/step - loss: 0.1098 - accuracy: 0.9571 - val_loss: 0.1272 - val_accuracy: 0.9310
+Epoch 10/10
+26/26 [==============================] - 13s 493ms/step - loss: 0.1055 - accuracy: 0.9559 - val_loss: 0.1210 - val_accuracy: 0.9557
+</code></pre><h4 id="model-evaluation">Model Evaluation</h4>
+<p>The trained model achieved an accuracy of ~97% on the holdout dataset.</p>
+<pre><code class="language-{python}" data-lang="{python}">targets = np.array([np.argmax(label) for label in next(iter(testGen))[1]])
+test_preds = np.array([np.argmax(prediction) for prediction in model.predict(testGen)])
+sum(targets == test_preds) / len(targets)
+</code></pre><pre><code>0.9722222222222222
+</code></pre><h4 id="model-explantion-with-shap">Model Explantion with SHAP</h4>
+<pre><code class="language-{python}" data-lang="{python}">import shap
+import numpy as np
+
+X_train = next(iter(trainGen))[0] # Get the first of images from the training generator
+
+explainer = shap.GradientExplainer(model, X_train) # Initialize the GradientExplainer for the CNN
+sv = explainer.shap_values(X_train[:10]) # Generate the SHAP values for a sample of the training data
+
+shap.image_plot([sv[i] for i in range(3)], X_train[:10], show=True) # plot the SHAP values on top of your images
+</code></pre><p><img src="/images/shap_results.png" alt="Example image"></p>
+<p>Not entirely sure if I&rsquo;m doing this last part correctly as the images doesnt loop all that great&hellip;</p>
+
+                </div>
+            </section>
+
+        </article>
+
+    </div>
+</main>
+<aside class="read-next outer">
+    <div class="inner">
+        <div class="read-next-feed"><article class="post-card post
+ no-image
+ ">
+
+        
+    
+        <div class="post-card-content">
+    
+            <a class="post-card-content-link" href="https://malcolmsfraser.github.io/post/streamlit-demo/">
+    
+                <header class="post-card-header">
+                    
+
+                    <h2 class="post-card-title">Streamlit Demo</h2>
+                </header>
+    
+                <section class="post-card-excerpt">
+                    <p>In this blog post I will walk through how I used streamlit to build a dashboard for visualizing and comparing data on post-PhD activities of 2017 graduates by sex.
+Streamlit is one of most popular python webapp and dashboarding tools out there today. It links connects almost seamlessly with many of the visualization tools in the Python DS ecosystem, and has tons of options for customization.
+Let&rsquo;s get started!
+Part 1: Analyze the data Before moving to Streamlit, I started in a Jupyter notebook to explore the data, find some interesting visualizations and overall just get a feel for the data - both content and structure.</p>
+                </section>
+    
+            </a>
+
+            <footer class="post-card-meta">
+                    <ul class="author-list">
+                        <li class="author-list-item">
+                            <div class="author-name-tooltip">Malcolm Smith Fraser</div>
+                            <a href="#" class="static-avatar author-profile-image"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="M3.513 18.998C4.749 15.504 8.082 13 12 13s7.251 2.504 8.487 5.998C18.47 21.442 15.417 23 12 23s-6.47-1.558-8.487-4.002zM12 12c2.21 0 4-2.79 4-5s-1.79-4-4-4-4 1.79-4 4 1.79 5 4 5z" fill="#FFF"/></g></svg></a>
+                        </li>
+                    </ul>
+                    <div class="post-card-byline-content">
+                        <span>Malcolm Smith Fraser</span>
+                        <span class="post-card-byline-date"><time datetime="2021-810-10">15 October 2021</time>
+                            <span class="bull">&bull;</span> 9 min read</span>
+                    </div>
+                </footer>
+    
+        </div>
+
+</article>
+    
+
+            
+        </div>
+    </div>
+</aside>
+
+
+        <footer class="site-footer outer">
+            <div class="site-footer-content inner">
+                <section class="copyright"><a href="https://malcolmsfraser.github.io">Malcolm Smith Fraser</a> &copy; 2021</section>
+                <nav class="site-footer-nav">
+                    <a href="https://malcolmsfraser.github.io">Latest Posts</a>
+                    <a href="https://facebook.com" target="_blank" rel="noopener">Facebook</a>
+                    
+                    <a href="https://github.com/malcolmsfraser" target="_blank" rel="noopener">Github</a>
+                    <a href="https://jonathanjanssens.com" target="_blank" rel="noopener" style="opacity: 0.5;">Hugo Casper3 by Jonathan Janssens</a>
+                </nav>
+            </div>
+        </footer>
+
+    </div>
+
+</body>
+</html>
