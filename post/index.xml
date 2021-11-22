@@ -6,7 +6,17 @@
     <description>Recent content in Posts on Malcolm Smith Fraser</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 12 Nov 2021 01:03:23 +0000</lastBuildDate><atom:link href="https://malcolmsfraser.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 22 Nov 2021 19:36:36 +0000</lastBuildDate><atom:link href="https://malcolmsfraser.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Covid Death Forecasting</title>
+      <link>https://malcolmsfraser.github.io/post/covid-death-forecasting/</link>
+      <pubDate>Mon, 22 Nov 2021 19:36:36 +0000</pubDate>
+      
+      <guid>https://malcolmsfraser.github.io/post/covid-death-forecasting/</guid>
+      <description>In this post I will discuss the overall scope, the teams approach, and the results of a final project I completed for the Statistical Program for Big Data course at Duke.
+The goal of this project was to determine if a univariate autoregressive model or a multivariate autoregressive model was better at forecasting COVID-19 deaths in the Durham area (DHPC). The data used to perform this analysis came the AWS COVID-19 data lake, and from the North Carolina Department of Heath and Human Services&amp;rsquo;s COVID-19 dashboard.</description>
+    </item>
+    
     <item>
       <title>Explaining Tensorflow Predictions with SHapley Additive exPlanations</title>
       <link>https://malcolmsfraser.github.io/post/tensorflow-shap/</link>
