@@ -14,7 +14,7 @@
       
       <guid>https://malcolmsfraser.github.io/post/covid-death-forecasting/</guid>
       <description>In this post I will discuss the overall scope, the teams approach, and the results of a final project I completed for the Statistical Program for Big Data course at Duke.
-The goal of this project was to determine if a univariate autoregressive model or a multivariate autoregressive model was better at forecasting COVID-19 deaths in the Durham area (DHPC). The data used to perform this analysis came the AWS COVID-19 data lake, and from the North Carolina Department of Heath and Human Services&amp;rsquo;s COVID-19 dashboard.</description>
+Project Scope The goal of this project was to determine if a univariate autoregressive model or a multivariate autoregressive model was better at forecasting COVID-19 deaths in the Durham area (DHPC). The data used to perform this analysis came the AWS COVID-19 data lake, and from the North Carolina Department of Heath and Human Services&amp;rsquo;s COVID-19 dashboard.</description>
     </item>
     
     <item>
